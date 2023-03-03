@@ -1,0 +1,26 @@
+DROP TABLE Tasks;
+
+CREATE TABLE Tasks(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    grName NVARCHAR(10) NOT NULL REFERENCES GR(name),
+    title NVARCHAR(15) NOT NULL CHECK (title != ''),
+    detail NVARCHAR(100),
+    createTime datetime DEFAULT (datetime('now', 'localtime')) NOT NULL,
+    deadline datetime CHECK(deadline > createTime) NOT NULL,
+    reminder BIT CHECK (reminder = 1 or reminder = 0) NOT NULL
+);
+ALTER TABLE Tasks
+    ADD grName COLUMN NVARCHAR(10) REFERENCES GR(name);
+
+INSERT INTO Tasks(grName, title, detail, deadline, reminder) VALUES('HOME', 'study', 'math, computer, hóa học', datetime('2022-12-02 17:25'), 3);
+INSERT INTO Tasks(grName, title, detail, deadline) VALUES('SCHOOL', 'study', 'math, computer, hóa học', datetime('2022-12-02 17:25'));
+
+SELECT * FROM Tasks;
+
+CREATE TABLE GR(
+    name NVARCHAR(10) PRIMARY KEY NOT NULL
+)
+DROP TABLE GR;
+
+INSERT INTO GR(name) VALUES('SCHOOL');
+INSERT INTO GR(name) VALUES('HOME');
